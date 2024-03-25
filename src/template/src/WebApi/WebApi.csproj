@@ -31,7 +31,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="MassTransit.RabbitMQ" Version="8.1.2" />
+        <PackageReference Include="MassTransit.RabbitMQ" Version="8.2.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="4.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
