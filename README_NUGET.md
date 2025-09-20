@@ -1,4 +1,5 @@
 <!-- PROJECT SHIELDS -->
+
 [![License][license-shield]][license-url]
 [![Build][build-shield]][build-url]
 [![Packages][package-shield]][package-url]
@@ -17,7 +18,7 @@
 [license-url]: https://github.com/Genocs/genocs-library-template/blob/main/LICENSE
 [build-shield]: https://github.com/Genocs/genocs-library-template/actions/workflows/build_and_test.yml/badge.svg?branch=main
 [build-url]: https://github.com/Genocs/genocs-library-template/actions/workflows/build_and_test.yml
-[package-shield]: https://img.shields.io/badge/nuget-v.1.5.1-blue?&label=latests&logo=nuget
+[package-shield]: https://img.shields.io/badge/nuget-v.2.0.0-blue?&label=latests&logo=nuget
 [package-url]: https://github.com/Genocs/genocs-library-template/actions/workflows/build_and_test.yml
 [downloads-shield]: https://img.shields.io/nuget/dt/Genocs.Library.Template.svg?color=2da44e&label=downloads&logo=nuget
 [downloads-url]: https://www.nuget.org/packages/Genocs.Library.Template
@@ -40,89 +41,93 @@
 [twitterx-shield]: https://img.shields.io/twitter/url/https/twitter.com/genocs.svg?style=social
 [twitterx-url]: https://twitter.com/genocs
 
-[![logo](https://raw.githubusercontent.com/Genocs/genocs-library-template/main/assets/genocs-library-logo.png "logo")](https://github.com/Genocs/genocs-library-template)
+[![logo](https://raw.githubusercontent.com/Genocs/genocs-library-template/main/assets/genocs-library-logo.png "Genocs Library Template Logo")](https://github.com/Genocs/genocs-library-template)
 
-# Genocs Library Template 
-This is the template to be used for scaffolding .NET8 Web Api solution with Genocs Library. It incorporates the most essential Packages your projects will need. You can use it as a starting point for your projects.
+# Genocs Library Template
 
-The template can be used with the `dotnet new` command or with the `Visual Studio 2022` or `Visual Studio Code` IDEs.
+A comprehensive .NET project template for scaffolding Web API solutions with Clean Architecture principles. This template incorporates essential packages and provides a solid foundation for building scalable web applications.
 
+Compatible with `dotnet new` command, Visual Studio 2022, and Visual Studio Code.
 
-## Goals
+## Features
 
-The goal of this repository is to help developers/companies kickstart their Web Application Development with a pre-built Web Api Template based on Genocs Library NuGet packages. It includes several much needed components and features.
+This template provides:
 
-> Note that this is a backend application only! The frontend for this application is available in a seperate repository. 
-> - Find Genocs's .NET Web API template here - [genocs-library-template](https://github.com/Genocs/genocs-library-template)
+- **Clean Architecture**: Well-structured, maintainable codebase
+- **Essential Packages**: Pre-configured with commonly needed NuGet packages
+- **Web API & Worker Services**: Ready-to-use project templates
+- **Testing Setup**: Unit and integration test projects included
+- **Docker Support**: Container-ready configuration
+- **DevOps Ready**: Azure Pipeline configurations included
+
+> **Note**: This template focuses on backend services. For frontend applications, explore our separate repositories.
 
 ## Prerequisites
+
 - [.NET 9.x](https://dotnet.microsoft.com/download/dotnet/9.0)
-- [Visual Studio 2022](https://visualstudio.microsoft.com/vs/preview/vs2022/)(optional)
-- [Visual Studio Code](https://code.visualstudio.com/download)(optional)
-- [Rider](https://www.jetbrains.com/rider/)(optional)
 
+### Optional Development Tools
+- [Visual Studio 2022](https://visualstudio.microsoft.com/vs/preview/vs2022/)
+- [Visual Studio Code](https://code.visualstudio.com/download)
+- [JetBrains Rider](https://www.jetbrains.com/rider/)
 
-## Getting Started
+## Installation
 
-Open up your *Command Prompt* or *PowerShell* or "bash" and run the following command.
+Install the template using the .NET CLI:
 
-``` bash
-# To install the template
+```bash
+# Install the latest version
 dotnet new install Genocs.Library.Template
+
+# Install a specific version
+dotnet new install Genocs.Library.Template::2.0.0
 ```
 
-or, 
+## Usage
 
-if you want to use a specific version of the template, 
+Create a new project from the template:
 
-use
+```bash
+# Create a new project
+dotnet new gnx-librawebapi --name MyCompany.MyProject
 
-``` bash
-dotnet new -install Genocs.Library.Template::1.5.1
+# Get help and see all options
+dotnet new gnx-librawebapi --help
 ```
 
+> **Latest Version**: Current stable release is **2.0.0**. Visit [NuGet](https://www.nuget.org/packages/Genocs.Library.Template/) for the latest version.
 
-This would install the `Genocs Library Web Api Template` globally on your machine. Do note that, at the time of writing this documentation, the latest available version is **1.5.1** which is also one of the first stable release version of the package. It is highly likely that there is already a newer version available when you are reading this.
+## Documentation
 
-
-> *To get the latest version of the package, visit [nuget.org](https://www.nuget.org/packages/Genocs.Library.Template/)*
->
-
-For more details on getting started, [read the documentation](https://genocs-blog.netlify.app/library/)
-
+For comprehensive guides and documentation:
+- [Genocs Library Documentation](https://genocs-blog.netlify.app/library/)
+- [Source Code Repository](https://github.com/Genocs/genocs-library-template)
 
 ## License
 
-This project is licensed with the [MIT license](LICENSE).
+This project is licensed under the [MIT License](LICENSE).
 
-## Changelogs
+## Changelog
 
-View Complete [Changelogs](https://github.com/Genocs/genocs-library-template/blob/main/CHANGELOG.md).
+View the [complete changelog](https://github.com/Genocs/genocs-library-template/blob/main/CHANGELOG.md) for release notes.
 
 ## Community
 
-- Discord [@genocs](https://discord.com/invite/fWwArnkV)
-- Facebook Page [@genocs](https://facebook.com/Genocs)
-- Youtube Channel [@genocs](https://youtube.com/c/genocs)
+- 💬 **Discord**: [@genocs](https://discord.com/invite/fWwArnkV)
+- 📘 **Facebook**: [@genocs](https://facebook.com/Genocs)
+- 📺 **YouTube**: [@genocs](https://youtube.com/c/genocs)
 
+## Support This Project
 
-## Support
+If this template helps your development:
 
-Has this Project helped you learn something New? or Helped you at work?
+- ⭐ **Star** the repository
+- 🔄 **Share** with your team
+- 💼 **Connect** on [LinkedIn](https://www.linkedin.com/in/giovanni-emanuele-nocco-b31a5169/)
+- ☕ **Buy me a coffee** - [Support](https://www.buymeacoffee.com/genocs)
 
-Here are a few ways by which you can support.
-
-- ⭐ Leave a star!
-- 🥇 Recommend this project to your colleagues.
-- 🦸 Do consider endorsing me on LinkedIn for ASP.NET Core - [Connect via LinkedIn](https://www.linkedin.com/in/giovanni-emanuele-nocco-b31a5169/) 
-- ☕ If you want to support this project in the long run, consider [buying me a coffee](https://www.buymeacoffee.com/genocs)!
-  
-
-[![buy-me-a-coffee](https://raw.githubusercontent.com/Genocs/genocs-library-template/main/assets/buy-me-a-coffee.png "buy me a coffee")](https://www.buymeacoffee.com/genocs)
-
+[![Buy me a coffee](https://raw.githubusercontent.com/Genocs/genocs-library-template/main/assets/buy-me-a-coffee.png)](https://www.buymeacoffee.com/genocs)
 
 ## Financial Contributors
 
-Become a financial contributor and help me sustain the project.
-
-**Support the Project** on [Opencollective](https://opencollective.com/genocs).
+Support the project's development on [Open Collective](https://opencollective.com/genocs).
