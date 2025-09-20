@@ -11,17 +11,14 @@ using Genocs.Logging;
 using Genocs.MessageBrokers.Outbox;
 using Genocs.MessageBrokers.Outbox.MongoDB;
 using Genocs.MessageBrokers.RabbitMQ;
-using Genocs.Metrics.Prometheus;
-using Genocs.Tracing;
 using Genocs.Persistence.MongoDb.Extensions;
 using Genocs.Persistence.Redis;
 using Genocs.Secrets.Vault;
+using Genocs.Tracing;
 using Genocs.WebApi;
-using Genocs.WebApi.Security;
 using Genocs.WebApi.Swagger;
 using Genocs.WebApi.Swagger.Docs;
 using Serilog;
-using System.Reflection;
 
 StaticLogger.EnsureInitialized();
 
@@ -31,8 +28,7 @@ builder.Host
         .UseLogging()
         .UseVault();
 
-var gnxBuilder = builder
-                        .AddGenocs()
+var gnxBuilder = builder.AddGenocs()
                         .AddOpenTelemetry();
 
 gnxBuilder
@@ -42,23 +38,19 @@ gnxBuilder
         .AddCorrelationContextLogging()
         .AddConsul()
         .AddFabio()
-        .AddMongo()
-        .AddMongoFast(registerConventions: false)
-        .RegisterMongoRepositories(Assembly.GetExecutingAssembly())
+        .AddMongoWithRegistration()
         .AddCommandHandlers()
         .AddEventHandlers()
         .AddQueryHandlers()
         .AddInMemoryCommandDispatcher()
         .AddInMemoryEventDispatcher()
         .AddInMemoryQueryDispatcher()
-        .AddPrometheus()
         .AddRedis();
 
 await gnxBuilder.AddRabbitMQAsync();
 
 gnxBuilder.AddMessageOutbox(o => o.AddMongo())
         .AddWebApi()
-        .AddSwaggerDocs()
         .AddWebApiSwaggerDocs()
         .Build();
 
@@ -79,54 +71,44 @@ var services = builder.Services;
 //    options.Predicate = check => check.Tags.Contains("ready");
 //});
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-//services.AddEndpointsApiExplorer();
-//services.AddSwaggerGen();
-
 // Add Masstransit bus configuration
 services.AddCustomMassTransit(builder.Configuration);
 
-// services.AddOptions();
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//}
+//.UseCertificateAuthentication()
+//.UseEndpoints(r => r.MapControllers())
+//.Get<GetOrder, OrderDto>("orders/{orderId}")
+//.Post<CreateOrder>("orders",
+//    afterDispatch: (cmd, ctx) => ctx.Response.Created($"orders/{cmd.OrderId}")))
+//.UseRabbitMQ();
+//    .SubscribeEvent<DeliveryStarted>();
 
 // END: TO be Refactory
 
 app.UseGenocs()
     .UserCorrelationContextLogging()
     .UseErrorHandler()
-    .UsePrometheus()
-    .UseRouting()
-    .UseCertificateAuthentication()
-    .UseEndpoints(r => r.MapControllers())
-    //.Get<GetOrder, OrderDto>("orders/{orderId}")
-    //.Post<CreateOrder>("orders",
-    //    afterDispatch: (cmd, ctx) => ctx.Response.Created($"orders/{cmd.OrderId}")))
     .UseSwaggerDocs()
-    .UseRabbitMQ();
-//    .SubscribeEvent<DeliveryStarted>();
+    .UseRouting();
+
+app.UseHttpsRedirection();
 
 // global cors policy
 // app.UseCors(x => x
-//    .SetIsOriginAllowed(origin => true)
-//    .AllowAnyMethod()
-//    .AllowAnyHeader()
-//    .AllowCredentials());
+//     .SetIsOriginAllowed(origin => true)
+//     .AllowAnyMethod()
+//     .AllowAnyHeader()
+//     .AllowCredentials());
 
-// app.UseHttpsRedirection();
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 
-// app.UseRouting();
+// Use it only if you need to authenticate with Firebase
+// app.UseFirebaseAuthentication();
 
-// app.UseAuthorization();
-
-// app.MapControllers();
+app.MapControllers();
 
 app.MapDefaultEndpoints();
 
