@@ -81,3 +81,5 @@ static void ConfigureBus(IBusRegistrationContext context, IRabbitMqBusFactoryCon
     // This configuration will configure the Activity Definition
     configurator.ConfigureEndpoints(context);
 }
+
+Log.CloseAndFlush();
