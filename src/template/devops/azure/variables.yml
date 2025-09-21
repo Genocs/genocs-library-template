@@ -1,0 +1,40 @@
+# Demo pipeline
+# This pipeline is used to show how to use variables in Azure DevOps.
+
+# Before run pipeline please check the variables
+# *** Library variables ***
+# Variable group name: General
+# Variables:
+# - HelloFromGroup
+
+# *** Pipeline variables ***
+# Variable name: MajorVer
+# Variable name: MinorVer
+# Variable name: HelloFromPipeline
+
+# Changing the name the variable $(Build.BuildNumber) will change as well
+name: $(MajorVer).$(MinorVer)$(Rev:.r)
+
+trigger:
+  - develop
+  - main
+
+pool:
+  vmImage: ubuntu-latest # Agent VM image name
+
+resources:
+  - repo: self
+
+variables:
+  # Here is how to read the Variables from Variable group
+  - group: "General" # The variable group Name
+
+stages:
+  - stage: ReadVariables
+    jobs:
+      - job: Test
+        steps:
+          - script: echo This is the value from the variable group $(HelloFromGroup)
+            displayName: "Display Variable Group Value"
+          - script: echo This is the value from the pipeline variable $(HelloFromPipeline)
+            displayName: "Display Pipeline Variable Value"

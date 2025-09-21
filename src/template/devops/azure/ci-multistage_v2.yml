@@ -1,0 +1,67 @@
+# Multistage pipeline
+# This pipeline create a multistage to build a docker Image and put it on docker hub.
+
+name: Genocs.KeyVaultReader Docker Hub multistage
+
+trigger:
+  - none
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  buildConfiguration: "Release"
+  imageName: "genocs/keyvaultreader:$(MajorVer).$(MinorVer).$(Build.BuildId)"
+
+stages:
+  - stage: Build_Dev
+    displayName: Build Dev image
+    jobs:
+      - job: Build
+        displayName: Build and push Docker image
+        steps:
+          - task: Docker@1
+            displayName: "Build the Docker image"
+            inputs:
+              containerregistrytype: "Container Registry"
+              dockerRegistryEndpoint: "DockerHub"
+              command: "Build an image"
+              dockerFile: "Dockerfile"
+              arguments: "--build-arg BuildId=$(Build.BuildId) --build-arg PAT=$(PatNugetsFeed)"
+              imageName: "$(ImageName)_d"
+
+          - task: Docker@1
+            displayName: "Push the Docker image to Dockerhub"
+            inputs:
+              containerregistrytype: "Container Registry"
+              dockerRegistryEndpoint: "DockerHub"
+              command: "Push an image"
+              imageName: "$(ImageName)_d"
+            condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+
+  - stage: Build_QA
+    displayName: Build QA image
+    condition:
+
+    jobs:
+      - job: Build
+        displayName: Build and push Docker image
+        steps:
+          - task: Docker@1
+            displayName: "Build the Docker image"
+            inputs:
+              containerregistrytype: "Container Registry"
+              dockerRegistryEndpoint: "DockerHub"
+              command: "Build an image"
+              dockerFile: "Dockerfile"
+              arguments: "--build-arg BuildId=$(Build.BuildId) --build-arg PAT=$(PatNugetsFeed)"
+              imageName: "$(ImageName)_q"
+
+          - task: Docker@1
+            displayName: "Push the Docker image to Dockerhub"
+            inputs:
+              containerregistrytype: "Container Registry"
+              dockerRegistryEndpoint: "DockerHub"
+              command: "Push an image"
+              imageName: "$(ImageName)_q"
+            condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))

@@ -18,7 +18,7 @@
 [license-url]: https://github.com/Genocs/genocs-library-template/blob/main/LICENSE
 [build-shield]: https://github.com/Genocs/genocs-library-template/actions/workflows/build_and_test.yml/badge.svg?branch=main
 [build-url]: https://github.com/Genocs/genocs-library-template/actions/workflows/build_and_test.yml
-[package-shield]: https://img.shields.io/badge/nuget-v.2.0.0-blue?&label=latests&logo=nuget
+[package-shield]: https://img.shields.io/badge/nuget-v.2.1.0-blue?&label=latests&logo=nuget
 [package-url]: https://github.com/Genocs/genocs-library-template/actions/workflows/build_and_test.yml
 [downloads-shield]: https://img.shields.io/nuget/dt/Genocs.Library.Template.svg?color=2da44e&label=downloads&logo=nuget
 [downloads-url]: https://www.nuget.org/packages/Genocs.Library.Template
@@ -91,7 +91,7 @@ Before getting started, ensure you have the following installed:
 dotnet new install Genocs.Library.Template
 
 # Install a specific version
-dotnet new install Genocs.Library.Template::2.0.0
+dotnet new install Genocs.Library.Template::2.1.0
 
 # Create a new project
 dotnet new gnx-librawebapi --name MyCompany.MyProject
@@ -107,10 +107,10 @@ git clone https://github.com/Genocs/genocs-library-template
 cd genocs-library-template
 
 # Build the NuGet package
-nuget pack ./src/Package.Template.nuspec -NoDefaultExcludes -OutputDirectory ./out -Version 2.0.0
+nuget pack ./src/Package.Template.nuspec -NoDefaultExcludes -OutputDirectory ./out -Version 2.1.0
 
 # Install the template locally
-dotnet new install ./out/Genocs.Library.Template.2.0.0.nupkg
+dotnet new install ./out/Genocs.Library.Template.2.1.0.nupkg
 
 # Create a new project
 dotnet new gnx-librawebapi --name MyCompany.MyProject
@@ -124,12 +124,13 @@ To see all available options for the template:
 dotnet new gnx-librawebapi --help
 ```
 
-> **Latest Version**: The current stable version is **2.0.0**. Check [NuGet](https://www.nuget.org/packages/Genocs.Library.Template/) for the latest release.
+> **Latest Version**: The current stable version is **2.1.0**. Check [NuGet](https://www.nuget.org/packages/Genocs.Library.Template/) for the latest release.
 
 ## Usage
 
 ### Creating a New Project
 
+```bash
 Once the template is installed, create a new project using:
 
 ```bash

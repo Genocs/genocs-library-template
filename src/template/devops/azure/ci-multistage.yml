@@ -1,0 +1,277 @@
+trigger:
+  - master
+
+resources:
+  containers:
+    - container: MemberDossierweb
+      type: ACR
+      azureSubscription: Azure Container Registry
+      resourceGroup: RG-UTU-Test-Linux
+      registry: genocsacr
+      repository: MemberDossierWebapi
+      image: MemberDossierWebapi
+      trigger:
+        tags:
+          include:
+            - latest
+
+name: $(majorVer).$(minorVer).$(patchVer)$(rev:.r)
+
+variables:
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: "Azure Container Registry"
+  imageRepository: "MemberDossierWebapi"
+  containerRegistry: "genocsacr.azurecr.io"
+  dockerfilePath: "$(Build.SourcesDirectory)/Dockerfile"
+  tag: "latest"
+  azureSubscription: "Pagamento in base al consumo(f20b0dac-53ce-44d4-a673-eb1fd36ee03b)"
+  azureRG: "RG-Genocs"
+  WebAppName: "Genocs-MemberDossier"
+  slotName: "staging"
+  Environment: "Development"
+  location: "West Europe"
+  subscriptionId: "f20b0dac-53ce-44d4-a673-eb1fd36ee03b"
+  #sku: 'P3V2'
+  ConnectionType: "AzureRM"
+  appServicePlanName: "small-linux"
+
+  # Agent VM image name
+  vmImageName: "ubuntu-latest"
+
+stages:
+  - stage: Build
+    displayName: "Build and push stage"
+    jobs:
+      - job: Build
+        displayName: Build
+        pool:
+          vmImage: $(vmImageName)
+
+        steps:
+          - task: Docker@2
+            displayName: Build and push an image to container registry
+            inputs:
+              containerRegistry: "$(dockerRegistryServiceConnection)"
+              repository: "$(imageRepository)"
+              command: "buildAndPush"
+              Dockerfile: "$(dockerfilePath)"
+              tags: "$(tag)"
+
+  - stage: "Dev"
+    displayName: "Dev Deploy"
+    dependsOn: Build
+    jobs:
+      - deployment: DeployDocker
+        displayName: "Deploy to Dev Environment"
+
+        pool:
+          vmImage: $(vmImageName)
+        environment: Dev
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: DownloadBuildArtifacts@0
+                  inputs:
+                    buildType: "specific"
+                    project: "cb0c7c5b-0052-49a1-8f9f-6b291929e55f"
+                    pipeline: "14"
+                    buildVersionToDownload: "latest"
+                    downloadType: "single"
+                    artifactName: "drop"
+                    downloadPath: "$(System.ArtifactsDirectory)"
+
+                - task: AzureResourceManagerTemplateDeployment@3
+                  inputs:
+                    deploymentScope: "Resource Group"
+                    azureResourceManagerConnection: "$(ConnectionType)"
+                    subscriptionId: "$(subscriptionId)"
+                    action: "Create Or Update Resource Group"
+                    resourceGroupName: "$(azureRG)"
+                    location: "$(location)"
+                    templateLocation: "Linked artifact"
+                    csmFile: "$(Pipeline.Workspace)/**/WebAppContainer/template.json"
+                    csmParametersFile: "$(Pipeline.Workspace)/**/WebAppContainer/parameters.json"
+                    overrideParameters: '-webAppName "$(webAppName)-$(Environment.Name)" -appServicePlanName "$(appServicePlanName)" -location "$(location)" -fullyQualifiedImageName "$(containerRegistry)/$(imageRepository):$(tag)" -sku "$(sku)"'
+                    deploymentMode: "Incremental"
+
+                - task: AzureRmWebAppDeployment@4
+                  inputs:
+                    ConnectionType: "AzureRM"
+                    azureSubscription: "$(azureSubscription)"
+                    appType: "webAppContainer"
+                    WebAppName: "$(WebAppName)-$(Environment.Name)"
+                    deployToSlotOrASE: true
+                    ResourceGroupName: "$(azureRG)"
+                    SlotName: "$(slotName)"
+                    DockerNamespace: "$(containerRegistry)"
+                    DockerRepository: "$(imageRepository)"
+                    DockerImageTag: "$(tag)"
+
+                - task: AzureAppServiceManage@0
+                  inputs:
+                    azureSubscription: "$(azureSubscription)"
+                    Action: "Swap Slots"
+                    WebAppName: "$(WebAppName)-$(Environment.Name)"
+                    ResourceGroupName: "$(azureRG)"
+                    SourceSlot: "$(slotName)"
+
+                - task: AzureAppServiceSettings@1
+                  inputs:
+                    azureSubscription: "$(azureSubscription)"
+                    appName: "$(WebAppName)-$(Environment.Name)"
+                    resourceGroupName: "$(azureRG)"
+                    appSettings: |
+                      [
+                        {
+                          "name": "ASPNETCORE_ENVIRONMENT",
+                          "value": "$(Environment)", 
+                          "slotSetting": false
+                        }
+                      ]
+
+  - stage: "QA"
+    displayName: "QA Deploy"
+    dependsOn: Dev
+    jobs:
+      - deployment: DeployDocker
+        displayName: "Deploy to QA Environment"
+
+        pool:
+          vmImage: $(vmImageName)
+        environment: QA
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: DownloadBuildArtifacts@0
+                  inputs:
+                    buildType: "specific"
+                    project: "cb0c7c5b-0052-49a1-8f9f-6b291929e55f"
+                    pipeline: "14"
+                    buildVersionToDownload: "latest"
+                    downloadType: "single"
+                    artifactName: "drop"
+                    downloadPath: "$(System.ArtifactsDirectory)"
+
+                - task: AzureResourceManagerTemplateDeployment@3
+                  inputs:
+                    deploymentScope: "Resource Group"
+                    azureResourceManagerConnection: "$(ConnectionType)"
+                    subscriptionId: "$(subscriptionId)"
+                    action: "Create Or Update Resource Group"
+                    resourceGroupName: "$(azureRG)"
+                    location: "$(location)"
+                    templateLocation: "Linked artifact"
+                    csmFile: "$(Pipeline.Workspace)/**/WebAppContainer/template.json"
+                    csmParametersFile: "$(Pipeline.Workspace)/**/WebAppContainer/parameters.json"
+                    overrideParameters: '-webAppName "$(webAppName)-$(Environment.Name)" -appServicePlanName "$(appServicePlanName)" -location "$(location)" -fullyQualifiedImageName "$(containerRegistry)/$(imageRepository):$(tag)" -sku "$(sku)"'
+                    deploymentMode: "Incremental"
+
+                - task: AzureRmWebAppDeployment@4
+                  inputs:
+                    ConnectionType: "AzureRM"
+                    azureSubscription: "$(azureSubscription)"
+                    appType: "webAppContainer"
+                    WebAppName: "$(WebAppName)-$(Environment.Name)"
+                    deployToSlotOrASE: true
+                    ResourceGroupName: "$(azureRG)"
+                    SlotName: "$(slotName)"
+                    DockerNamespace: "$(containerRegistry)"
+                    DockerRepository: "$(imageRepository)"
+                    DockerImageTag: "$(tag)"
+
+                - task: AzureAppServiceManage@0
+                  inputs:
+                    azureSubscription: "$(azureSubscription)"
+                    Action: "Swap Slots"
+                    WebAppName: "$(WebAppName)-$(Environment.Name)"
+                    ResourceGroupName: "$(azureRG)"
+                    SourceSlot: "$(slotName)"
+
+                - task: AzureAppServiceSettings@1
+                  inputs:
+                    azureSubscription: "$(azureSubscription)"
+                    appName: "$(WebAppName)-$(Environment.Name)"
+                    resourceGroupName: "$(azureRG)"
+                    appSettings: |
+                      [
+                        {
+                          "name": "ASPNETCORE_ENVIRONMENT",
+                          "value": "$(Environment.Name)", 
+                          "slotSetting": false
+                        }
+                      ]
+
+  - stage: "Test"
+    displayName: "Test Deploy"
+    dependsOn: QA
+    jobs:
+      - deployment: DeployDocker
+        displayName: "Deploy to Test Environment"
+
+        pool:
+          vmImage: $(vmImageName)
+        environment: Test
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: DownloadBuildArtifacts@0
+                  inputs:
+                    buildType: "specific"
+                    project: "cb0c7c5b-0052-49a1-8f9f-6b291929e55f"
+                    pipeline: "14"
+                    buildVersionToDownload: "latest"
+                    downloadType: "single"
+                    artifactName: "drop"
+                    downloadPath: "$(System.ArtifactsDirectory)"
+
+                - task: AzureResourceManagerTemplateDeployment@3
+                  inputs:
+                    deploymentScope: "Resource Group"
+                    azureResourceManagerConnection: "$(ConnectionType)"
+                    subscriptionId: "$(subscriptionId)"
+                    action: "Create Or Update Resource Group"
+                    resourceGroupName: "$(azureRG)"
+                    location: "$(location)"
+                    templateLocation: "Linked artifact"
+                    csmFile: "$(Pipeline.Workspace)/**/WebAppContainer/template.json"
+                    csmParametersFile: "$(Pipeline.Workspace)/**/WebAppContainer/parameters.json"
+                    overrideParameters: '-webAppName "$(webAppName)-$(Environment.Name)" -appServicePlanName "$(appServicePlanName)" -location "$(location)" -fullyQualifiedImageName "$(containerRegistry)/$(imageRepository):$(tag)" -sku "$(sku)"'
+                    deploymentMode: "Incremental"
+
+                - task: AzureRmWebAppDeployment@4
+                  inputs:
+                    ConnectionType: "AzureRM"
+                    azureSubscription: "$(azureSubscription)"
+                    appType: "webAppContainer"
+                    WebAppName: "$(WebAppName)-$(Environment.Name)"
+                    deployToSlotOrASE: true
+                    ResourceGroupName: "$(azureRG)"
+                    SlotName: "$(slotName)"
+                    DockerNamespace: "$(containerRegistry)"
+                    DockerRepository: "$(imageRepository)"
+                    DockerImageTag: "$(tag)"
+
+                - task: AzureAppServiceManage@0
+                  inputs:
+                    azureSubscription: "$(azureSubscription)"
+                    Action: "Swap Slots"
+                    WebAppName: "$(WebAppName)-$(Environment.Name)"
+                    ResourceGroupName: "$(azureRG)"
+                    SourceSlot: "$(slotName)"
+
+                - task: AzureAppServiceSettings@1
+                  inputs:
+                    azureSubscription: "$(azureSubscription)"
+                    appName: "$(WebAppName)-$(Environment.Name)"
+                    resourceGroupName: "$(azureRG)"
+                    appSettings: |
+                      [
+                        {
+                          "name": "ASPNETCORE_ENVIRONMENT",
+                          "value": "$(Environment.Name)", 
+                          "slotSetting": false
+                        }
+                      ]

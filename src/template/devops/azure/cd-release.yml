@@ -1,0 +1,16 @@
+#Your build pipeline references an undefined variable named ‘Parameters.ConnectedServiceName’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references an undefined variable named ‘Parameters.WebAppKind’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references an undefined variable named ‘Parameters.WebAppName’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references an undefined variable named ‘Parameters.StartupCommand’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+
+steps:
+  - task: AzureRmWebAppDeployment@4
+    displayName: "Deploy Azure App Service"
+    inputs:
+      connectionType: "AzureRM"
+      azureSubscription: "$(Parameters.ConnectedServiceName)"
+      appType: "$(Parameters.WebAppKind)"
+      webAppName: "$(Parameters.WebAppName)"
+      packageForLinux: "$(Build.ArtifactStagingDirectory)/Output"
+      runtimeStack: "DOTNETCORE|9.0"
+      startupCommand: "$(Parameters.StartupCommand)"

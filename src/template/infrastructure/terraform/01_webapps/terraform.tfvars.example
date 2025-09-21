@@ -1,0 +1,53 @@
+# Example terraform.tfvars file for Fiscanner infrastructure
+# Copy this file to terraform.tfvars and modify the values as needed
+
+# Project configuration
+project_name = "fiscanner"
+location     = "West Europe"
+
+# Environments to create
+environments = ["dev", "test", "stage", "prod"]
+
+# App Service Plan SKUs for each environment
+app_service_plan_sku = {
+  dev   = "B1"    # Basic tier for development
+  test  = "B1"    # Basic tier for testing
+  stage = "S1"    # Standard tier for staging
+  prod  = "P1v2"  # Premium tier for production
+}
+
+# .NET version for the applications
+dotnet_version = "8.0"
+
+# Common tags for all resources
+tags = {
+  Project   = "fiscanner"
+  ManagedBy = "Terraform"
+  Owner     = "Genocs"
+  CostCenter = "IT"
+}
+
+# Container Registry configuration
+container_registry_sku = "Standard"
+
+# Container image names
+container_images = {
+  web_app = "fiscanner-web"
+  worker  = "fiscanner-worker"
+}
+
+# Enable container webhooks for automatic deployment
+enable_container_webhooks = true
+
+# Monitoring configuration
+log_analytics_retention_days = 30
+monitoring_email = "devops@genocs.com"
+enable_availability_tests = true
+
+# Application Insights sampling percentage by environment
+app_insights_sampling_percentage = {
+  dev   = 50
+  test  = 50
+  stage = 75
+  prod  = 100
+}

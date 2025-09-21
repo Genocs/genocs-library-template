@@ -13,18 +13,18 @@ WORKDIR /src
 COPY ["Directory.Build.props", "."]
 COPY ["Directory.Build.targets", "."]
 COPY ["NuGet.config", "."]
-COPY ["src/Worker/Worker.csproj", "src/Worker/"]
+COPY ["src/Worker/Host.csproj", "src/Worker/"]
 COPY ["src/Contracts/Contracts.csproj", "src/Contracts/"]
 COPY ["src/Domain/Domain.csproj", "src/Domain/"]
-RUN dotnet restore "./src/Worker/Worker.csproj"
+RUN dotnet restore "./src/Worker/Host.csproj"
 COPY . .
 WORKDIR "/src/src/Worker"
-RUN dotnet build "./Worker.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./Host.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Worker.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./Host.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final

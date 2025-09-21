@@ -89,10 +89,10 @@
       "path": "src/UnitTests/UnitTests.csproj"
     },
     {
-      "path": "src/WebApi/WebApi.csproj"
+      "path": "src/WebApi/Host.csproj"
     },
     {
-      "path": "src/Worker/Worker.csproj"
+      "path": "src/Worker/Host.csproj"
     }
   ]
 }

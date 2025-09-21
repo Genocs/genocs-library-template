@@ -1,0 +1,34 @@
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  AzureSubscription: "Pagamento in base al consumo (f20b0dac-53ce-44d4-a673-eb1fd36ee03b)"
+  EnviromentName: $(ENVIROMENT_NAME)
+  ResourceGroupName: $(RESOURCE_GROUP_NAME)
+  DeploymentDefaultLocation: "westeurope"
+  BicepFile: "bicep/main.bicep"
+
+jobs:
+  - job:
+    displayName: "Update LogicApp Connectors"
+    steps:
+      - task: AzurePowerShell@5
+        displayName: "Download OpenAPI Manifest"
+        inputs:
+          AzureSubscription: $(AzureSubscription)
+          ScriptType: "FilePath"
+          ScriptPath: "./scripts/DownloadOpenApiManifest.ps1"
+          azurePowerShellVersion: latestVersion
+          pwsh: true
+
+      - task: AzureResourceManagerTemplateDeployment@3
+        displayName: "Deploy Bicep file"
+        inputs:
+          connectedServiceName: "BicepServiceConnection"
+          location: $(DeploymentDefaultLocation)
+          resourceGroupName: $(ResourceGroupName)
+          csmFile: $(BicepFile)
+          overrideParameters: >
+            -env: $(EnviromentName)

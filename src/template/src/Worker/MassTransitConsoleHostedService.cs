@@ -3,8 +3,8 @@
 namespace Genocs.Library.Template.Worker;
 
 /// <summary>
-/// General purpose worker. Please check the link below for further information
-/// https://learn.microsoft.com/en-us/aspnet/core/fundamentals/host/hosted-services?view=aspnetcore-7.0&tabs=visual-studio.
+/// General purpose worker. Please check the link below for further information.
+/// <seealso href="https://learn.microsoft.com/en-us/aspnet/core/fundamentals/host/hosted-services">Hosted Services</seealso>
 /// </summary>
 public class MassTransitConsoleHostedService(IBusControl bus, ILogger<MassTransitConsoleHostedService> logger) : IHostedService
 {
