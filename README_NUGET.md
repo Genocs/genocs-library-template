@@ -18,7 +18,7 @@
 [license-url]: https://github.com/Genocs/genocs-library-template/blob/main/LICENSE
 [build-shield]: https://github.com/Genocs/genocs-library-template/actions/workflows/build_and_test.yml/badge.svg?branch=main
 [build-url]: https://github.com/Genocs/genocs-library-template/actions/workflows/build_and_test.yml
-[package-shield]: https://img.shields.io/badge/nuget-v.2.1.1-blue?&label=latests&logo=nuget
+[package-shield]: https://img.shields.io/badge/nuget-v.2.2.0-blue?&label=latests&logo=nuget
 [package-url]: https://github.com/Genocs/genocs-library-template/actions/workflows/build_and_test.yml
 [downloads-shield]: https://img.shields.io/nuget/dt/Genocs.Library.Template.svg?color=2da44e&label=downloads&logo=nuget
 [downloads-url]: https://www.nuget.org/packages/Genocs.Library.Template
@@ -67,6 +67,7 @@ This template provides:
 - [.NET 9.x](https://dotnet.microsoft.com/download/dotnet/9.0)
 
 ### Optional Development Tools
+
 - [Visual Studio 2022](https://visualstudio.microsoft.com/vs/preview/vs2022/)
 - [Visual Studio Code](https://code.visualstudio.com/download)
 - [JetBrains Rider](https://www.jetbrains.com/rider/)
@@ -80,7 +81,7 @@ Install the template using the .NET CLI:
 dotnet new install Genocs.Library.Template
 
 # Install a specific version
-dotnet new install Genocs.Library.Template::2.1.1
+dotnet new install Genocs.Library.Template::2.2.0
 ```
 
 ## Usage
@@ -95,11 +96,12 @@ dotnet new gnx-librawebapi --name MyCompany.MyProject
 dotnet new gnx-librawebapi --help
 ```
 
-> **Latest Version**: Current stable release is **2.1.1**. Visit [NuGet](https://www.nuget.org/packages/Genocs.Library.Template/) for the latest version.
+> **Latest Version**: Current stable release is **2.2.0**. Visit [NuGet](https://www.nuget.org/packages/Genocs.Library.Template/) for the latest version.
 
 ## Documentation
 
 For comprehensive guides and documentation:
+
 - [Genocs Library Documentation](https://genocs-blog.netlify.app/library/)
 - [Source Code Repository](https://github.com/Genocs/genocs-library-template)
 

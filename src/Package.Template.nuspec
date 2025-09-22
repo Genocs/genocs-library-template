@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata minClientVersion="5.10.0">
 		<id>Genocs.Library.Template</id>
-		<version>2.1.1</version>
+		<version>2.2.0</version>
 		<title>Genocs - Library Web Api Template</title>
 		<authors>Nocco Giovanni Emanuele</authors>
 		<owners>[Genocs] Nocco Giovanni Emanuele</owners>
@@ -16,9 +16,12 @@
 		<summary>Genocs Library Template to implement solution base on Genocs Library.</summary>
 		<description>Template designed for Genocs Library.</description>
 		<releaseNotes>
-			Relesase 2.1.0:
+			Release 2.2.0:
+			- Removed legacy Azure pipeline YAML files.
+			- Added README for ACA infrastructure.
+			Release 2.1.0:
 			- Added support for github Agent workflows.
-			Relesase 2.0.0:
+			Release 2.0.0:
 			- Updated to Genocs Library to 7.4.*
 		</releaseNotes>
 		<language>en-US</language>
