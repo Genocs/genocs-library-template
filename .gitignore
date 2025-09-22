@@ -457,5 +457,7 @@ $RECYCLE.BIN/
 
 # Package build
 nupkgs
+nuget.exe
 
 [Ll]og*.txt
+

@@ -18,7 +18,7 @@
 [license-url]: https://github.com/Genocs/genocs-library-template/blob/main/LICENSE
 [build-shield]: https://github.com/Genocs/genocs-library-template/actions/workflows/build_and_test.yml/badge.svg?branch=main
 [build-url]: https://github.com/Genocs/genocs-library-template/actions/workflows/build_and_test.yml
-[package-shield]: https://img.shields.io/badge/nuget-v.2.1.0-blue?&label=latests&logo=nuget
+[package-shield]: https://img.shields.io/badge/nuget-v.2.1.1-blue?&label=latests&logo=nuget
 [package-url]: https://github.com/Genocs/genocs-library-template/actions/workflows/build_and_test.yml
 [downloads-shield]: https://img.shields.io/nuget/dt/Genocs.Library.Template.svg?color=2da44e&label=downloads&logo=nuget
 [downloads-url]: https://www.nuget.org/packages/Genocs.Library.Template
@@ -80,7 +80,7 @@ Install the template using the .NET CLI:
 dotnet new install Genocs.Library.Template
 
 # Install a specific version
-dotnet new install Genocs.Library.Template::2.1.0
+dotnet new install Genocs.Library.Template::2.1.1
 ```
 
 ## Usage
@@ -95,7 +95,7 @@ dotnet new gnx-librawebapi --name MyCompany.MyProject
 dotnet new gnx-librawebapi --help
 ```
 
-> **Latest Version**: Current stable release is **2.1.0**. Visit [NuGet](https://www.nuget.org/packages/Genocs.Library.Template/) for the latest version.
+> **Latest Version**: Current stable release is **2.1.1**. Visit [NuGet](https://www.nuget.org/packages/Genocs.Library.Template/) for the latest version.
 
 ## Documentation
 
