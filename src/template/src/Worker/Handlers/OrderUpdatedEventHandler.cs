@@ -3,16 +3,16 @@ using Genocs.Library.Template.Contracts.Events;
 
 namespace Genocs.Library.Template.Worker.Handlers;
 
-public class DemoEventHandler : IEventHandler<DemoEvent>
+public class OrderUpdatedEventHandler : IEventHandler<OrderUpdatedEvent>
 {
-    private readonly ILogger<DemoEventHandler> _logger;
+    private readonly ILogger<OrderUpdatedEventHandler> _logger;
 
-    public DemoEventHandler(ILogger<DemoEventHandler> logger)
+    public OrderUpdatedEventHandler(ILogger<OrderUpdatedEventHandler> logger)
     {
         _logger = logger;
     }
 
-    public Task HandleAsync(DemoEvent @event, CancellationToken cancellationToken)
+    public Task HandleAsync(OrderUpdatedEvent @event, CancellationToken cancellationToken)
     {
         _logger.LogInformation($"DemoEvent '{@event.Name}' processed!");
 

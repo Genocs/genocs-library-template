@@ -1,27 +1,148 @@
-﻿using Genocs.Core.Domain.Entities;
-using Genocs.Core.Domain.Entities.Auditing;
-using Genocs.Core.Domain.Repositories;
-using Genocs.Persistence.MongoDb.Domain.Entities;
-using MongoDB.Bson;
+﻿using Genocs.Core.Domain.Repositories;
 
 namespace Genocs.Library.Template.Domain.Aggregates;
 
+/// <summary>
+/// Represents an order aggregate root entity in the domain model.
+/// This class encapsulates order information including payment details and is mapped to the "Orders" collection in MongoDB.
+/// Inherits from BaseAggregateRoot to provide ObjectId primary key and creation time tracking.
+/// Use this class as a template for creating new aggregate roots in the system.
+/// </summary>
+/// <param name="orderId">The unique business identifier for the order within the domain.</param>
+/// <param name="userId">The unique identifier of the user who placed the order.</param>
+/// <param name="cardToken">The tokenized payment card information for secure payment processing.</param>
+/// <param name="amount">The monetary amount of the order.</param>
+/// <param name="currency">The currency code for the order amount (e.g., USD, EUR, GBP).</param>
+/// <remarks>
+/// <para>
+/// The Order aggregate is the primary entity for managing order-related data and business logic within the system.
+/// It includes order identification, customer information, payment details, and monetary values.
+/// </para>
+/// <para>
+/// This class uses C# 13 primary constructor syntax for concise initialization and serves as a template
+/// for implementing other aggregate roots in the domain model.
+/// All properties are mutable to support entity framework, serialization, and business operation scenarios.
+/// </para>
+/// <para>
+/// The TableMapping attribute maps this entity to the "Orders" collection in MongoDB,
+/// allowing the repository pattern to correctly persist and retrieve order data.
+/// </para>
+/// <para>
+/// Security considerations:
+/// - CardToken should contain tokenized payment information, never raw card details
+/// - Ensure proper encryption and compliance with PCI DSS standards
+/// - Consider implementing audit trails for financial transactions
+/// </para>
+/// </remarks>
 [TableMapping("Orders")]
-public class Order : AggregateRoot<ObjectId>, IMongoDbEntity, IHasCreationTime
+public class Order(string orderId, string userId, string cardToken, decimal amount, string currency) : BaseAggregateRoot
 {
-    public Order(string orderId, string userId, string cardToken, decimal amount, string currency)
-    {
-        OrderId = orderId;
-        UserId = userId;
-        CardToken = cardToken;
-        Amount = amount;
-        Currency = currency;
-    }
+    /// <summary>
+    /// Gets or sets the unique identifier for the order within the business domain.
+    /// This is distinct from the MongoDB ObjectId and represents the business key for the order.
+    /// </summary>
+    /// <value>
+    /// A string value representing the order's unique business identifier.
+    /// Typically a GUID string, sequential order number, or other business-specific identifier.
+    /// </value>
+    /// <remarks>
+    /// This property serves as the business identifier and should be unique across all orders.
+    /// It is separate from the Id property inherited from BaseAggregateRoot which contains the MongoDB ObjectId.
+    /// Consider implementing a consistent order numbering scheme for better user experience and tracking.
+    /// </remarks>
+    public string OrderId { get; set; } = orderId;
 
-    public string OrderId { get; set; } = Guid.NewGuid().ToString();
-    public string UserId { get; set; } = default!;
-    public string CardToken { get; set; } = default!;
-    public decimal Amount { get; set; }
-    public string Currency { get; set; } = default!;
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    /// <summary>
+    /// Gets or sets the unique identifier of the user who placed the order.
+    /// Links the order to a specific customer in the system.
+    /// </summary>
+    /// <value>
+    /// A string value representing the user's unique identifier.
+    /// Should correspond to a valid UserId in the Users collection.
+    /// </value>
+    /// <remarks>
+    /// This property establishes the relationship between the order and the customer.
+    /// Consider implementing referential integrity checks to ensure the referenced user exists.
+    /// This field is essential for customer service, order history, and business analytics.
+    /// </remarks>
+    public string UserId { get; set; } = userId;
+
+    /// <summary>
+    /// Gets or sets the tokenized payment card information for secure payment processing.
+    /// Contains a secure token representing the payment method, not raw card details.
+    /// </summary>
+    /// <value>
+    /// A string value containing the tokenized representation of the payment card.
+    /// Should never contain actual card numbers, CVV, or other sensitive payment data.
+    /// </value>
+    /// <remarks>
+    /// <para>
+    /// For security and PCI DSS compliance, this field should only contain tokenized payment information
+    /// generated by a certified payment processor or tokenization service.
+    /// </para>
+    /// <para>
+    /// The token can be used to process payments, refunds, or recurring charges
+    /// without exposing sensitive cardholder data.
+    /// </para>
+    /// <para>
+    /// Consider implementing:
+    /// - Token expiration handling
+    /// - Payment method validation
+    /// - Secure token storage practices
+    /// - Audit logging for payment operations
+    /// </para>
+    /// </remarks>
+    public string CardToken { get; set; } = cardToken;
+
+    /// <summary>
+    /// Gets or sets the monetary amount of the order.
+    /// Represents the total value that the customer needs to pay for this order.
+    /// </summary>
+    /// <value>
+    /// A decimal value representing the order amount in the specified currency.
+    /// Should be a positive value for standard orders, may be negative for refunds.
+    /// </value>
+    /// <remarks>
+    /// <para>
+    /// Using decimal type ensures precise monetary calculations without floating-point errors.
+    /// The amount should include all applicable taxes, fees, and charges.
+    /// </para>
+    /// <para>
+    /// Consider implementing validation to ensure:
+    /// - Amount is within reasonable bounds
+    /// - Proper precision for the specified currency
+    /// - Business rules for minimum/maximum order values
+    /// </para>
+    /// <para>
+    /// For multi-currency support, always use this amount in conjunction with the Currency property.
+    /// </para>
+    /// </remarks>
+    public decimal Amount { get; set; } = amount;
+
+    /// <summary>
+    /// Gets or sets the currency code for the order amount.
+    /// Specifies the monetary unit in which the Amount is expressed.
+    /// </summary>
+    /// <value>
+    /// A string value representing the currency code.
+    /// Should follow ISO 4217 standard (e.g., "USD", "EUR", "GBP", "JPY").
+    /// </value>
+    /// <remarks>
+    /// <para>
+    /// This property is essential for international commerce and multi-currency support.
+    /// Always use standardized ISO 4217 three-letter currency codes for consistency.
+    /// </para>
+    /// <para>
+    /// Consider implementing:
+    /// - Currency validation against supported currencies
+    /// - Exchange rate handling for reporting
+    /// - Regional currency defaults based on user location
+    /// - Currency conversion utilities for administrative purposes
+    /// </para>
+    /// <para>
+    /// The currency code should match the currency used during payment processing
+    /// to ensure accurate financial reporting and reconciliation.
+    /// </para>
+    /// </remarks>
+    public string Currency { get; set; } = currency;
 }

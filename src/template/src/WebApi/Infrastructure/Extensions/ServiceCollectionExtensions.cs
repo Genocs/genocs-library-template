@@ -1,4 +1,4 @@
-﻿using Genocs.Library.Template.WebApi.Options;
+﻿using Genocs.Library.Template.Contracts.Options;
 using MassTransit;
 
 namespace Genocs.Library.Template.WebApi.Infrastructure.Extensions;

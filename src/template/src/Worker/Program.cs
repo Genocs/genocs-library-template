@@ -1,5 +1,5 @@
 using Genocs.Core.Builders;
-using Genocs.Library.Template.Worker;
+using Genocs.Library.Template.Contracts.Options;
 using Genocs.Library.Template.Worker.Consumers;
 using Genocs.Logging;
 using Genocs.Monitoring;
@@ -14,16 +14,11 @@ IHost host = Host.CreateDefaultBuilder(args)
     .UseLogging()
     .ConfigureServices((hostContext, services) =>
     {
-        // Run the hosted service
-        services.AddHostedService<MassTransitConsoleHostedService>();
-
         services
             .AddGenocs(hostContext.Configuration)
             .AddMongoWithRegistration();
 
-        // RegisterCustomMongoRepository(services, hostContext.Configuration);
-
-        ConfigureMassTransit(services, hostContext.Configuration);
+        AddCustomMassTransit(services, hostContext.Configuration);
 
         services.AddCustomOpenTelemetry(hostContext.Configuration);
     })
@@ -33,53 +28,40 @@ await host.RunAsync();
 
 Log.CloseAndFlush();
 
-static IServiceCollection ConfigureMassTransit(IServiceCollection services, IConfiguration configuration)
+static IServiceCollection AddCustomMassTransit(IServiceCollection services, IConfiguration configuration)
 {
+    var rabbitMQSettings = new RabbitMQSettings();
+    configuration.GetSection(RabbitMQSettings.Position).Bind(rabbitMQSettings);
+
+    services.AddSingleton(rabbitMQSettings);
+
     services.TryAddSingleton(KebabCaseEndpointNameFormatter.Instance);
-    services.AddMassTransit(cfg =>
+
+    services.AddMassTransit(x =>
     {
         // Consumer configuration
-        cfg.AddConsumersFromNamespaceContaining<SubmitOrderConsumer>();
+        x.AddConsumersFromNamespaceContaining<SubmitOrderCommandConsumer>();
 
-        // Set the transport
-        cfg.UsingRabbitMq(ConfigureBus);
-    });
-
-    return services;
-}
-
-/*
-static IServiceCollection RegisterCustomMongoRepository(IServiceCollection services, IConfiguration configuration)
-{
-    // services.AddScoped<IRepository<Order, ObjectId>, Genocs.Persistence.MongoDb.Repositories.MongoDbRepository<Order>>();
-
-    return services;
-}
-*/
-
-static void ConfigureBus(IBusRegistrationContext context, IRabbitMqBusFactoryConfigurator configurator)
-{
-    // configurator.UseMessageData(new MongoDbMessageDataRepository("mongodb://127.0.0.1", "attachments"));
-
-    /*
-    configurator.ReceiveEndpoint(KebabCaseEndpointNameFormatter.Instance.Consumer<RoutingSlipBatchEventConsumer>(), e =>
-    {
-        e.PrefetchCount = 20;
-        e.Batch<RoutingSlipCompleted>(b =>
+        x.UsingRabbitMq((context, cfg) =>
         {
-            b.MessageLimit = 10;
-            b.TimeLimit = TimeSpan.FromSeconds(5);
+            cfg.ConfigureEndpoints(context);
 
-            b.Consumer<RoutingSlipBatchEventConsumer, RoutingSlipCompleted>(context);
+            // cfg.UseHealthCheck(context);
+            cfg.Host(
+                        rabbitMQSettings.HostName,
+                        rabbitMQSettings.VirtualHost,
+                        h =>
+                        {
+                            h.Username(rabbitMQSettings.UserName);
+                            h.Password(rabbitMQSettings.Password);
+                        });
+
+            // This configuration allow to handle the Scheduling
+            cfg.UseMessageScheduler(new Uri("queue:quartz"));
         });
     });
-    */
 
-    // This configuration allow to handle the Scheduling
-    configurator.UseMessageScheduler(new Uri("queue:quartz"));
-
-    // This configuration will configure the Activity Definition
-    configurator.ConfigureEndpoints(context);
+    return services;
 }
 
 Log.CloseAndFlush();

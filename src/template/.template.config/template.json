@@ -54,7 +54,6 @@
         ".template.config/**",
         ".idea/**",
         ".vs/**",
-        ".github/**",
         "media/**"
       ],
       "modifiers": [
