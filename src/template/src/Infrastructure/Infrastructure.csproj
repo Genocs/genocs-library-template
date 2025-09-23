@@ -8,4 +8,13 @@
         <AssemblyName>Genocs.Library.Template.Infrastructure</AssemblyName>
     </PropertyGroup>
 
+    <ItemGroup>
+        <PackageReference Include="Genocs.Monitoring" Version="5.0.*" />
+        <PackageReference Include="Genocs.Logging" Version="7.4.*" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Domain\Domain.csproj" />
+    </ItemGroup>
+    
 </Project>
