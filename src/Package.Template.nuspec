@@ -9,10 +9,10 @@
 		<projectUrl>https://github.com/Genocs/genocs-library-template</projectUrl>
 		<repository type="git" url="https://github.com/Genocs/genocs-library-template.git" branch="main" />
 		<license type="expression">MIT</license>
-		<icon>.\content\icon.png</icon>
-		<readme>.\content\README_NUGET.md</readme>
+		<icon>.\icon.png</icon>
+		<readme>.\README_NUGET.md</readme>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<copyright>2025</copyright>
+		<copyright>Copyright (c) 2025 Genocs Services</copyright>
 		<summary>Genocs Library Template to implement solution base on Genocs Library.</summary>
 		<description>Template designed for Genocs Library.</description>
 		<releaseNotes>
