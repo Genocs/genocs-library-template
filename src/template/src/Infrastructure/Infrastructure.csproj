@@ -10,7 +10,7 @@
 
     <ItemGroup>
         <PackageReference Include="Genocs.Monitoring" Version="5.0.*" />
-        <PackageReference Include="Genocs.Logging" Version="7.4.*" />
+        <PackageReference Include="Genocs.Logging" Version="7.5.0" />
     </ItemGroup>
 
     <ItemGroup>
