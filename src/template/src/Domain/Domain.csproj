@@ -10,7 +10,7 @@
 
     <ItemGroup>
         <PackageReference Include="Genocs.Persistence.MongoDb" Version="7.4.*" />
-        <PackageReference Include="Genocs.Core" Version="7.4.*" />
+        <PackageReference Include="Genocs.Core" Version="7.5.0" />
     </ItemGroup>
 
 </Project>
