@@ -27,7 +27,7 @@ public static class ServiceCollectionExtensions
     /// The registration follows these conventions:
     /// - Classes ending with "Service" are registered with interfaces starting with "I" and ending with "Service"
     /// - Classes ending with "Processor" are registered with interfaces starting with "I" and ending with "Processor"
-    /// - All registrations use transient lifetime
+    /// - All registrations use transient lifetime.
     /// </para>
     /// <para>
     /// Manual registrations can still be added after this method call to override or supplement
@@ -67,14 +67,14 @@ public static class ServiceCollectionExtensions
     /// - Automatic consumer discovery from the current assembly
     /// - Kebab-case endpoint naming convention
     /// - Message scheduling support using Quartz
-    /// - Connection configuration from appsettings.json
+    /// - Connection configuration from appsettings.json.
     /// </para>
     /// <para>
     /// Required configuration section: "RabbitMQSettings" with properties:
     /// - HostName: RabbitMQ server hostname
     /// - VirtualHost: Virtual host name
     /// - UserName: Authentication username
-    /// - Password: Authentication password
+    /// - Password: Authentication password.
     /// </para>
     /// </remarks>
     public static IServiceCollection AddCustomMassTransit(this IServiceCollection services, IConfiguration configuration)

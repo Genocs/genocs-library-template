@@ -16,10 +16,10 @@
 
 [license-shield]: https://img.shields.io/github/license/Genocs/genocs-library-template?color=2da44e&style=flat-square
 [license-url]: https://github.com/Genocs/genocs-library-template/blob/main/LICENSE
-[build-shield]: https://github.com/Genocs/genocs-library-template/actions/workflows/build_and_test.yml/badge.svg?branch=main
-[build-url]: https://github.com/Genocs/genocs-library-template/actions/workflows/build_and_test.yml
-[package-shield]: https://img.shields.io/badge/nuget-v.2.3.0-blue?&label=latests&logo=nuget
-[package-url]: https://github.com/Genocs/genocs-library-template/actions/workflows/build_and_test.yml
+[build-shield]: https://github.com/Genocs/genocs-library-template/actions/workflows/build-and-test.yml/badge.svg?branch=main
+[build-url]: https://github.com/Genocs/genocs-library-template/actions/workflows/build-and-test.yml
+[package-shield]: https://img.shields.io/badge/nuget-v.3.0.0-blue?&label=latests&logo=nuget
+[package-url]: https://www.nuget.org/packages/Genocs.Library.Template
 [downloads-shield]: https://img.shields.io/nuget/dt/Genocs.Library.Template.svg?color=2da44e&label=downloads&logo=nuget
 [downloads-url]: https://www.nuget.org/packages/Genocs.Library.Template
 [contributors-shield]: https://img.shields.io/github/contributors/Genocs/genocs-library-template.svg?style=flat-square
@@ -74,12 +74,12 @@ This repository provides a comprehensive .NET project template designed to accel
 
 Before getting started, ensure you have the following installed:
 
-- [.NET 9.x](https://dotnet.microsoft.com/download/dotnet/9.0)
+- [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0)
 - [Git](https://git-scm.com/downloads)
 
 ### Optional Development Tools
-- [Visual Studio 2022](https://visualstudio.microsoft.com/vs/preview/vs2022/)
-- [Visual Studio Code](https://code.visualstudio.com/download)
+- [Visual Studio 2026](https://visualstudio.microsoft.com/)
+- [Visual Studio Code](https://code.visualstudio.com/)
 - [JetBrains Rider](https://www.jetbrains.com/rider/)
 
 ## Quick Start
@@ -91,13 +91,15 @@ Before getting started, ensure you have the following installed:
 dotnet new install Genocs.Library.Template
 
 # Install a specific version
-dotnet new install Genocs.Library.Template::2.3.0
+dotnet new install Genocs.Library.Template::3.0.0
 
 # Create a new project
 dotnet new gnx-librawebapi --name MyCompany.MyProject
 ```
 
 ### Option 2: Build and Install from Source
+
+The template is packed from `src/Package.Template.csproj`. That project copies `src/template` into the NuGet package as content; it does not use the legacy `Package.Template.nuspec`.
 
 ```bash
 # Clone the repository
@@ -106,11 +108,16 @@ git clone https://github.com/Genocs/genocs-library-template
 # Navigate to the source directory
 cd genocs-library-template
 
-# Build the NuGet package
-nuget pack ./src/Package.Template.nuspec -NoDefaultExcludes -OutputDirectory ./out -Version 2.3.0
+# Restore, build, and test the template solution
+dotnet restore ./src/template
+dotnet build ./src/template -c Debug --no-restore
+dotnet test ./src/template -c Debug --no-build --verbosity normal
+
+# Pack the template package (version is passed to the SDK-style project)
+dotnet pack ./src/Package.Template.csproj -c Release -o ./out -p:PackageVersion=3.0.0
 
 # Install the template locally
-dotnet new install ./out/Genocs.Library.Template.2.3.0.nupkg
+dotnet new install ./out/Genocs.Library.Template.3.0.0.nupkg
 
 # Create a new project
 dotnet new gnx-librawebapi --name MyCompany.MyProject
@@ -124,13 +131,12 @@ To see all available options for the template:
 dotnet new gnx-librawebapi --help
 ```
 
-> **Latest Version**: The current stable version is **2.3.0**. Check [NuGet](https://www.nuget.org/packages/Genocs.Library.Template/) for the latest release.
+> **Latest Version**: The current stable version is **3.0.0**. Check [NuGet](https://www.nuget.org/packages/Genocs.Library.Template/) for the latest release.
 
 ## Usage
 
 ### Creating a New Project
 
-```bash
 Once the template is installed, create a new project using:
 
 ```bash

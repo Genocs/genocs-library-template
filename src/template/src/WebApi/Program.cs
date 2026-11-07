@@ -2,22 +2,20 @@ using Genocs.Core.Builders;
 using Genocs.Core.CQRS.Commands;
 using Genocs.Core.CQRS.Events;
 using Genocs.Core.CQRS.Queries;
-using Genocs.Discovery.Consul;
-using Genocs.HTTP;
 using Genocs.Library.Template.WebApi;
 using Genocs.Library.Template.WebApi.Infrastructure.Extensions;
 using Genocs.LoadBalancing.Fabio;
 using Genocs.Logging;
-using Genocs.MessageBrokers.Outbox;
-using Genocs.MessageBrokers.Outbox.MongoDB;
-using Genocs.MessageBrokers.RabbitMQ;
-using Genocs.Persistence.MongoDb.Extensions;
+using Genocs.Messaging.RabbitMQ;
+using Genocs.Messaging.Outbox;
+using Genocs.Messaging.Outbox.MongoDB;
+using Genocs.Persistence.MongoDB.Extensions;
 using Genocs.Persistence.Redis;
-using Genocs.Secrets.Vault;
-using Genocs.Tracing;
+using Genocs.Secrets.HashicorpKeyVault;
+using Genocs.ServiceDiscovery.Consul;
+using Genocs.Telemetry;
 using Genocs.WebApi;
-using Genocs.WebApi.Swagger;
-using Genocs.WebApi.Swagger.Docs;
+using Genocs.WebApi.OpenApi;
 using Serilog;
 
 StaticLogger.EnsureInitialized();
@@ -28,85 +26,50 @@ builder.Host
         .UseLogging()
         .UseVault();
 
-var gnxBuilder = builder.AddGenocs()
-                        .AddOpenTelemetry();
-
-gnxBuilder
-        .AddErrorHandler<ExceptionToResponseMapper>()
-        .AddServices()
-        .AddHttpClient()
-        .AddCorrelationContextLogging()
-        .AddConsul()
-        .AddFabio()
-        .AddMongoWithRegistration()
-        .AddCommandHandlers()
-        .AddEventHandlers()
-        .AddQueryHandlers()
-        .AddInMemoryCommandDispatcher()
-        .AddInMemoryEventDispatcher()
-        .AddInMemoryQueryDispatcher()
-        .AddRedis();
+IGenocsBuilder gnxBuilder = builder.AddGenocs()
+                                .AddTelemetry()
+                                .AddErrorHandler<ExceptionToResponseMapper>()
+                                .AddCorrelationContextLogging()
+                                .AddMongo()
+                                .AddMongoWithRegistration()
+                                .AddServices()
+                                .AddConsul()
+                                .AddFabio()
+                                .AddCommandHandlers()
+                                .AddEventHandlers()
+                                .AddQueryHandlers()
+                                .AddInMemoryCommandDispatcher()
+                                .AddInMemoryEventDispatcher()
+                                .AddInMemoryQueryDispatcher()
+                                .AddRedis()
+                                .AddMessageOutbox(o => o.AddMongo())
+                                .AddWebApi()
+                                .AddOpenApiDocs();
 
 await gnxBuilder.AddRabbitMQAsync();
 
-gnxBuilder.AddMessageOutbox(o => o.AddMongo())
-        .AddWebApi()
-        .AddWebApiSwaggerDocs()
-        .Build();
-
 var services = builder.Services;
 
-// START: TO be Refactory
-
-//services.AddCors();
-//services.AddControllers().AddJsonOptions(x =>
-//{
-//    // serialize Enums as strings in api responses (e.g. Role)
-//    x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-//});
-
-//services.Configure<HealthCheckPublisherOptions>(options =>
-//{
-//    options.Delay = TimeSpan.FromSeconds(2);
-//    options.Predicate = check => check.Tags.Contains("ready");
-//});
-
-// Add Masstransit bus configuration
 services.AddCustomMassTransit(builder.Configuration);
 
 var app = builder.Build();
 
-//.UseCertificateAuthentication()
-//.UseEndpoints(r => r.MapControllers())
-//.Get<GetOrder, OrderDto>("orders/{orderId}")
-//.Post<CreateOrder>("orders",
-//    afterDispatch: (cmd, ctx) => ctx.Response.Created($"orders/{cmd.OrderId}")))
-//.UseRabbitMQ();
-//    .SubscribeEvent<DeliveryStarted>();
-
-// END: TO be Refactory
+gnxBuilder.Build(app.Services);
 
 app.UseGenocs()
-    .UserCorrelationContextLogging()
+    .UseCorrelationContextLogging()
     .UseErrorHandler()
-    .UseSwaggerDocs()
+    .UseOpenApiDocs()
     .UseRouting();
 
-app.UseHttpsRedirection();
+// Uncomment the following line to enable HTTPS redirection.
+// In case of using a reverse proxy like Fabio, you may want to keep it commented out to avoid issues with SSL termination.
+// app.UseHttpsRedirection();
 
 // global cors policy
-// app.UseCors(x => x
-//     .SetIsOriginAllowed(origin => true)
-//     .AllowAnyMethod()
-//     .AllowAnyHeader()
-//     .AllowCredentials());
 
-app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
-// Use it only if you need to authenticate with Firebase
-// app.UseFirebaseAuthentication();
 
 app.MapControllers();
 

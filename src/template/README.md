@@ -1,26 +1,14 @@
 # Genocs.Library.Template service
 
-[![Build status](https://ci.appveyor.com/api/projects/status/0i6s33kw3y87tkb2?svg=true)](https://ci.appveyor.com/project/genocs/genocs-webapi-template)  ![NuGet](https://buildstats.info/nuget/Genocs.Library.Template) 
-
 
 ## Introduction
 
-This service was built with [genocs-webapi-template](https://github.com/Genocs/genocs-webapi-template) and is a part of [Genocs Library](https://genocs-blog.netlify.app/).
-
-To get all the information you need to use it: please check
-**[Genocs Library documentation](https://genocs-blog.netlify.app/)**
-
-
-<img src="https://genocs-blog.netlify.app/library/logo_hu5f84e5ac74e01291dbce57bab350d273_35818_2000x0_resize_box_3.png"
-     alt="Genocs Library logo"
-     style="float: left; margin-right: 10px; padding-bottom: 50px;" />
-
----
+This service is built with [genocs-webapi-template](https://github.com/Genocs/genocs-webapi-template) and is  following [Genocs Framework](https://genocs-blog.netlify.app/) pattern and practices.
 
 
 ## Motivation
 
-> Learn how to design modular applications.
+> Learn how to design modular applications following microservice pattern.
 >
 > Explore the .NET Core features.
 
@@ -39,7 +27,6 @@ This is continually updated, open source project.
 [Contributions](#contributors-) are welcome!
 
 ## <span style="color:red; font-size:xxl">**Work in Progress**</span>
-
 
 
 >Before start you have to update some values in the project.
@@ -68,7 +55,6 @@ This is because MongoDB does support database name with the character `.` (perio
 ## Containers and orchestrators
 
 The example is ready to create the docker images for both WebApi and BusWorker
-
 
 ## Contributing
 
@@ -102,53 +88,47 @@ http://butunclebob.com/ArticleS.UncleBob.TheThreeRulesOfTdd
 
 ## SOLID
 
-### Single Responsibility Principle
+| Principle | Rule |
+| --------- | ---- |
+| Single Responsibility Principle | A class should have one, and only one, reason to change. |
+| Open-Closed Principle | You should be able to extend a classes behavior, without modifying it. |
+| Liskov Substitution Principle | Derived classes must be substitutable for their base classes. |
+| Interface Segregation Principle | Make fine grained interfaces that are client specific. |
+| Dependency Inversion Principle | Depend on abstractions, not on concretions. |
 
-> A class should have one, and only one, reason to change.
-
-### Open-Closed Principle
-
-> You should be able to extend a classes behavior, without modifying it.
-
-### Liskov Substitution Principle
-
-> Derived classes must be substitutable for their base classes.
-
-### Interface Segregation Principle
-
-> Make fine grained interfaces that are client specific.
-
-### Dependency Inversion Principle
-
-> Depend on abstractions, not on concretions.
 
 ### Running the Tests Locally
 
-Run the following command at the root folder:
+Run the following command from the root folder:
 
+``` sh
+dotnet build
+dotnet test
+```
 
 ## Docker
 
 The project will build two different images. One for the the WebApi endpoint and one for the Background Worker.   
 
-
-To build the docker images:
+To build and run the docker images, you can use the following script:
 
 ``` sh
-# Manual build
-docker build -t genocs/genocs.library.template.webapi -f ./src/WebApi/Dockerfile .
-docker build -t genocs/genocs.library.template.worker -f ./src/Worker/Dockerfile .
-
-# Build using docker compose
-# Remember to update the .env file with the correct values
-docker compose -f ./docker-compose.yml build
+./scripts/run-on-docker.sh
 ```
 
+otherwise, you can run the following commands to build and run the docker images:
+
+``` sh
+docker build -t genocs/genocs.library.template.webapi -f ./src/WebApi/Dockerfile .
+docker build -t genocs/genocs.library.template.worker -f ./src/Worker/Dockerfile .
+```
 
 ## Kubernetes
 
 The project contains the Kubernetes manifest to deploy the application in a Kubernetes cluster.
-Remember to update the values in the manifest files before deploying the application.
+
+Update the values in the manifest files before deploying the application.
+
 Following the list of the variables to update:
 
 | Variable | Description 

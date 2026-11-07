@@ -1,0 +1,41 @@
+name: Documentation Validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "README.md"
+      - "CONTRIBUTING.md"
+      - "CODE_OF_CONDUCT.md"
+      - "docs/**"
+      - "scripts/validate-docs.mjs"
+      - ".github/workflows/documentation.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "README.md"
+      - "CONTRIBUTING.md"
+      - "CODE_OF_CONDUCT.md"
+      - "docs/**"
+      - "scripts/validate-docs.mjs"
+      - ".github/workflows/documentation.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate documentation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24.x
+
+      - name: Validate documentation
+        run: node scripts/validate-docs.mjs

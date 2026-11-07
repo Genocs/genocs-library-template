@@ -5,7 +5,6 @@ namespace Genocs.Library.Template.WebApi.Infrastructure.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-
     public static IServiceCollection AddCustomMassTransit(this IServiceCollection services, IConfiguration configuration)
     {
         var rabbitMQSettings = new RabbitMQSettings();

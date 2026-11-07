@@ -30,11 +30,11 @@ The generated project includes:
 ### Template Development & Testing
 ```bash
 # Build and pack the template
-nuget pack ./src/Package.Template.nuspec -NoDefaultExcludes -OutputDirectory ./out -Version 2.3.0
+nuget pack ./src/Package.Template.nuspec -NoDefaultExcludes -OutputDirectory ./out -Version 3.0.0
 
 # Install template locally for testing
 dotnet new uninstall Genocs.Library.Template  # Remove previous version
-dotnet new install ./out/Genocs.Library.Template.2.3.0.nupkg
+dotnet new install ./out/Genocs.Library.Template.3.0.0.nupkg
 
 # Generate test project
 dotnet new gnx-librawebapi --name TestCompany.TestProject.TestService

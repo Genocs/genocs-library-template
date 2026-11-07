@@ -1,14 +1,14 @@
 ﻿using Genocs.Library.Template.Domain.Aggregates;
-using Genocs.Persistence.MongoDb.Domain.Repositories;
+using Genocs.Persistence.MongoDB.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Genocs.Library.Template.WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class MongoDbRepositoryController(ILogger<MongoDbRepositoryController> logger, IMongoDbRepository<User> userRepository) : ControllerBase
+public class MongoDbRepositoryController(ILogger<MongoDbRepositoryController> logger, IMongoRepository<User> userRepository) : ControllerBase
 {
-    private readonly IMongoDbRepository<User> _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+    private readonly IMongoRepository<User> _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
 
     private readonly ILogger<MongoDbRepositoryController> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 

@@ -1,6 +1,6 @@
-﻿using Genocs.Core.Domain.Entities;
-using Genocs.Core.Domain.Entities.Auditing;
-using Genocs.Persistence.MongoDb.Domain.Entities;
+﻿using Genocs.Common.Domain.Entities.Auditing;
+using Genocs.Core.Domain.Entities;
+using Genocs.Persistence.MongoDB.Domain.Entities;
 using MongoDB.Bson;
 
 namespace Genocs.Library.Template.Domain.Aggregates;
@@ -9,7 +9,7 @@ namespace Genocs.Library.Template.Domain.Aggregates;
 /// Base class for aggregate roots with MongoDB ObjectId as the primary key.
 /// Use this class for aggregate roots that require creation time tracking.
 /// </summary>
-public abstract class BaseAggregateRoot : AggregateRoot<ObjectId>, IMongoDbEntity, IHasCreationTime
+public abstract class BaseAggregateRoot : AggregateRoot<ObjectId>, IMongoEntity, IHasCreationTime
 {
     /// <summary>
     /// The creation time of the entity.

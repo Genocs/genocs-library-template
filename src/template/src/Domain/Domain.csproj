@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <IsPublishable>false</IsPublishable>
         <IsPackable>false</IsPackable>
         <RootNamespace>Genocs.Library.Template.Domain</RootNamespace>
@@ -9,8 +9,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Genocs.Persistence.MongoDb" Version="7.4.*" />
-        <PackageReference Include="Genocs.Core" Version="7.4.*" />
+        <PackageReference Include="Genocs.Persistence.MongoDb" Version="9.1.0" />
+        <PackageReference Include="Genocs.Core" Version="9.1.0" />
     </ItemGroup>
 
 </Project>

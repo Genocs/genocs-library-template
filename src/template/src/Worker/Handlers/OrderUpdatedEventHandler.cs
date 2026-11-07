@@ -1,4 +1,4 @@
-﻿using Genocs.Core.CQRS.Events;
+﻿using Genocs.Common.CQRS.Events;
 using Genocs.Library.Template.Contracts.Events;
 
 namespace Genocs.Library.Template.Worker.Handlers;

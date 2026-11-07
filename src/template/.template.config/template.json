@@ -4,9 +4,9 @@
   "classifications": [
     "Web/ASP.NET"
   ],
-  "name": "Genocs Microservice application with Genocs library",
+  "name": "Microservice solution with Genocs library",
   "identity": "Genocs.Library.Template",
-  "description": "Genocs Microservice application with Genocs library.",
+  "description": "Microservice solution with Genocs library.",
   "groupIdentity": "gnx_librawebapi",
   "shortName": "gnx-librawebapi",
   "tags": {
@@ -70,9 +70,6 @@
   ],
   "primaryOutputs": [
     {
-      "path": "src/AcceptanceTests/AcceptanceTests.csproj"
-    },
-    {
       "path": "src/Contracts/Contracts.csproj"
     },
     {
@@ -82,16 +79,19 @@
       "path": "src/Infrastructure/Infrastructure.csproj"
     },
     {
-      "path": "src/IntegrationTests/IntegrationTests.csproj"
-    },
-    {
-      "path": "src/UnitTests/UnitTests.csproj"
-    },
-    {
       "path": "src/WebApi/Host.csproj"
     },
     {
       "path": "src/Worker/Host.csproj"
+    },
+    {
+      "path": "tests/AcceptanceTests/AcceptanceTests.csproj"
+    },
+    {
+      "path": "tests/IntegrationTests/IntegrationTests.csproj"
+    },
+    {
+      "path": "tests/UnitTests/UnitTests.csproj"
     }
   ]
 }

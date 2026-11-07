@@ -1,0 +1,25 @@
+<Solution>
+  <Folder Name="/tests/">
+    <Project Path="tests/AcceptanceTests/AcceptanceTests.csproj" />
+    <Project Path="tests/IntegrationTests/IntegrationTests.csproj" />
+    <Project Path="tests/UnitTests/UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/WebApi/">
+    <Project Path="src/WebApi/Host.csproj" />
+  </Folder>
+  <Folder Name="/Worker/">
+    <Project Path="src/Worker/Host.csproj" />
+  </Folder>
+  <Folder Name="/_Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Build.targets" />
+    <File Path="dotnet.ruleset" />
+    <File Path="global.json" />
+    <File Path="README.md" />
+    <File Path="stylecop.json" />
+  </Folder>
+  <Project Path="src/Contracts/Contracts.csproj" />
+  <Project Path="src/Domain/Domain.csproj" />
+  <Project Path="src/Infrastructure/Infrastructure.csproj" />
+</Solution>
