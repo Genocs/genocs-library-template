@@ -113,12 +113,12 @@ await gnxBuilder.AddRabbitMQAsync();
 - **Docker**: Multi-stage Dockerfiles for WebApi and Worker
 
 ## CI/CD Pipeline
-- **GitHub Actions**: `build_and_test.yml` runs on .NET 9 with restore, build, test, pack
+- **GitHub Actions**: `build-and-test.yml` runs on .NET 10 with restore, build, test, pack
 - **NuGet publishing**: Separate workflow for package deployment
 - **Version management**: `PackageVersion` in csproj, uses SemVer
 
 ## Dependencies & External Integration
-- **Genocs Library**: Core framework packages (version 7.4.*) for CQRS, messaging, persistence
+- **Genocs Library**: Core framework packages (version 9.1.0) for CQRS, messaging, persistence
 - **MassTransit + RabbitMQ**: Message broker for event-driven communication
 - **MongoDB**: Primary data store with Genocs persistence layer
 - **Redis**: Caching and session storage

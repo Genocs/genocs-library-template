@@ -10,17 +10,17 @@ on:
     inputs:
       version:
         # Friendly description to be shown in the UI instead of 'name'
-        description: "Packages Version"
+        description: "Package Version"
 
         # Default value if no value is explicitly provided
-        default: "9.0.0"
+        default: "3.0.0"
 
         # Input has to be provided for the workflow to run
         required: true
 
 jobs:
   build:
-    name: Update NuGet Packages
+    name: Update NuGet package
     runs-on: ubuntu-latest
 
     steps:
@@ -42,10 +42,20 @@ jobs:
       - name: Test
         run: dotnet test -c Debug --no-build --verbosity normal --report-trx --results-directory TestResults
 
+      - name: Create output directory
+        run: mkdir -p ./out
+
       - name: Pack
-        run: dotnet pack -c Debug -o out -p:PackageVersion=${{ github.event.inputs.version }} --no-build --verbosity normal
+        run: dotnet pack -c Debug -o ./out -p:PackageVersion=${{ github.event.inputs.version }} --no-build --verbosity normal
+
+      # Get a short-lived NuGet API key
+      - name: NuGet login (OIDC → temp API key)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{ secrets.NUGET_USER }}
 
       - name: Push Packages to NuGet
         env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
         run: dotnet nuget push ./out/*.nupkg -k ${{ env.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols

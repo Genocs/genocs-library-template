@@ -47,7 +47,7 @@
 
 # Genocs Library Template
 
-A comprehensive .NET project template that incorporates essential packages and follows Clean Architecture principles. This template provides a solid foundation for building scalable web applications and services.
+A comprehensive .NET template that incorporates Genocs packages and follows `Clean Architecture` principles. This template provides a solid foundation for building scalable web applications and services by using [Genocs Library](https://github.com/Genocs/genocs-library) Nuget packages.
 
 ## Overview
 
@@ -58,23 +58,21 @@ This repository provides a comprehensive .NET project template designed to accel
 - **Ready-to-Use Components**: Built-in features and components to jumpstart development
 - **Multiple Project Types**: Support for Web APIs, Worker services, and more
 
-> **Note**: This template focuses on backend services. For frontend applications, check out our separate frontend templates.
-
 ## What's Included
 
 - Web API project with controllers and infrastructure
 - Worker service for background processing
 - Domain-driven design structure
-- Unit and integration test projects
+- Unit, Integration and Acceptance test projects
 - Docker support
 - Kubernetes deployment manifests
-- Azure DevOps pipeline configurations
+- Azure DevOps pipeline
 
 ## Prerequisites
 
 Before getting started, ensure you have the following installed:
 
-- [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0)
+- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
 - [Git](https://git-scm.com/downloads)
 
 ### Optional Development Tools
@@ -92,9 +90,6 @@ dotnet new install Genocs.Library.Template
 
 # Install a specific version
 dotnet new install Genocs.Library.Template::3.0.0
-
-# Create a new project
-dotnet new gnx-librawebapi --name MyCompany.MyProject
 ```
 
 ### Option 2: Build and Install from Source
@@ -114,13 +109,23 @@ dotnet build ./src/template -c Debug --no-restore
 dotnet test ./src/template -c Debug --no-build --verbosity normal
 
 # Pack the template package (version is passed to the SDK-style project)
-dotnet pack ./src/Package.Template.csproj -c Release -o ./out -p:PackageVersion=3.0.0
+dotnet pack ./src/Package.Template.csproj -c Debug -o ./out -p:PackageVersion=3.0.0
 
 # Install the template locally
 dotnet new install ./out/Genocs.Library.Template.3.0.0.nupkg
+```
 
-# Create a new project
-dotnet new gnx-librawebapi --name MyCompany.MyProject
+### Useful Commands
+
+```bash
+# List all installed templates
+dotnet new list
+
+# Uninstall the template
+dotnet new uninstall Genocs.Library.Template
+
+# Get help for the template
+dotnet new gnx-librawebapi --help
 ```
 
 ### Get Help
@@ -141,7 +146,7 @@ Once the template is installed, create a new project using:
 
 ```bash
 # Create a new project with your desired name
-dotnet new gnx-librawebapi --name CompanyName.ProjectName.ServiceName
+dotnet new gnx-librawebapi --name <CompanyName.<ProjectName>.<ServiceName>
 
 # Navigate to the project directory
 cd CompanyName.ProjectName.ServiceName
@@ -152,11 +157,8 @@ dotnet build
 # Run tests
 dotnet test
 
-# Run the Web API
-dotnet run --project ./src/CompanyName.ProjectName.ServiceName.WebApi
-
-# Run the Worker service (in a separate terminal)
-dotnet run --project ./src/CompanyName.ProjectName.ServiceName.Worker
+# Run the Hosts (Both Web API and Worker host will start)
+dotnet run
 ```
 
 ### Development Workflow
@@ -173,34 +175,17 @@ dotnet test --verbosity normal
 dotnet watch run --project ./src/CompanyName.ProjectName.ServiceName.WebApi
 ```
 
-### Useful Commands
-
-```bash
-# List all installed templates
-dotnet new list
-
-# Uninstall the template
-dotnet new uninstall Genocs.Library.Template
-
-# Get help for the template
-dotnet new gnx-librawebapi --help
-```
-
 ## Documentation
 
 For comprehensive documentation and advanced usage:
 
 - [Genocs Library Documentation](https://genocs-blog.netlify.app/library/)
 - [.NET Custom Templates Guide](https://docs.microsoft.com/en-us/dotnet/core/tools/custom-templates)
-- [Visual Studio Project Templates](https://learn.microsoft.com/en-us/visualstudio/ide/how-to-locate-and-organize-project-and-item-templates?view=vs-2022)
+- [Visual Studio Project Templates](https://learn.microsoft.com/en-us/visualstudio/ide/how-to-locate-and-organize-project-and-item-templates?view=vs-2026)
 
 ## Contributing
 
 We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on how to submit pull requests, report issues, and contribute to the project.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
 
 ## Changelog
 
@@ -223,7 +208,7 @@ If this project has helped you learn something new or assisted you in your work,
 - 💼 **Endorse** on LinkedIn for ASP.NET Core - [Connect with the maintainer](https://www.linkedin.com/in/giovanni-emanuele-nocco-b31a5169/)
 - ☕ **Buy me a coffee** to support long-term development - [Support via Buy Me a Coffee](https://www.buymeacoffee.com/genocs)
 
-<p align="center">
+<p>
   <a href="https://www.buymeacoffee.com/genocs">
     <img src="./assets/buy-me-a-coffee.png" alt="Buy me a coffee" width="200"/>
   </a>
@@ -232,14 +217,6 @@ If this project has helped you learn something new or assisted you in your work,
 ## Contributors
 
 This project exists thanks to all the people who contribute. We welcome new contributors!
-
-### Code Contributors
-
-<p align="center">
-  <a href="https://github.com/Genocs/genocs-library-template/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=Genocs/genocs-library-template" alt="Contributors"/>
-  </a>
-</p>
 
 **Want to contribute?** Check out our [Contributing Guidelines](CONTRIBUTING.md) to get started.
 
