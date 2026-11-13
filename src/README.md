@@ -41,9 +41,8 @@
 [twitterx-shield]: https://img.shields.io/twitter/url/https/twitter.com/genocs.svg?style=social
 [twitterx-url]: https://twitter.com/genocs
 
-<p align="center">
-    <img src="./assets/genocs-library-logo.png" alt="Genocs Library Template Logo">
-</p>
+
+![Genocs Template Banner](https://raw.githubusercontent.com/Genocs/genocs-library-template/main/assets/genocs-library-logo.png)
 
 # Genocs Library Template
 
@@ -139,11 +138,8 @@ If this project has helped you learn something new or assisted you in your work,
 - 💼 **Endorse** on LinkedIn for ASP.NET Core - [Connect with the maintainer](https://www.linkedin.com/in/giovanni-emanuele-nocco-b31a5169/)
 - ☕ **Buy me a coffee** to support long-term development - [Support via Buy Me a Coffee](https://www.buymeacoffee.com/genocs)
 
-<p>
-  <a href="https://www.buymeacoffee.com/genocs">
-    <img src="../assets/buy-me-a-coffee.png" alt="Buy me a coffee" width="200"/>
-  </a>
-</p>
+
+![Buy Me a Coffee](https://raw.githubusercontent.com/Genocs/genocs-library-template/main/assets/buy-me-a-coffee.png)
 
 ## Contributors
 
@@ -157,14 +153,3 @@ Become a financial contributor and help sustain this project's development.
 
 **Support the project on [Open Collective](https://opencollective.com/genocs)**
 
-<p align="center">
-  <a href="https://opencollective.com/genocs">
-    <img src="https://opencollective.com/genocs/individuals.svg?width=890" alt="Financial Contributors"/>
-  </a>
-</p>
-
----
-
-<p align="center">
-  Made with ❤️ by the <a href="https://github.com/Genocs">Genocs</a> team
-</p>
