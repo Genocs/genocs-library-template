@@ -1,8 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
+<!-- The package metadata. Fill in the properties marked as TODO below -->
+<!-- Follow the instructions on https://learn.microsoft.com/en-us/nuget/create-packages/package-authoring-best-practices -->
 
   <PropertyGroup>
-    <!-- The package metadata. Fill in the properties marked as TODO below -->
-    <!-- Follow the instructions on https://learn.microsoft.com/en-us/nuget/create-packages/package-authoring-best-practices -->
+    <TargetFramework>net10.0</TargetFramework>
+    <!-- Keep package type as 'Template' to show the package as a template package on nuget.org and make your template available in dotnet new search.-->
+    <PackageType>Template</PackageType>    
     <PackageId>Genocs.Library.Template</PackageId>
     <PackageVersion>3.0.1</PackageVersion>
     <Title>Genocs - Library Web Api Template</Title>
@@ -10,15 +13,23 @@
     <Description>Template designed for Genocs Library.</Description>
     <PackageTags>architecture boilerplate ddd design-patterns docker domain driven design dotnet dotnetcore dotnet-core dotnet-template microservice microservices rabbitmq service bus solid solid-principles templating webapi</PackageTags>
     <PackageProjectUrl>https://github.com/Genocs/genocs-library-template</PackageProjectUrl>
-
-    <!-- Keep package type as 'Template' to show the package as a template package on nuget.org and make your template available in dotnet new search.-->
-    <PackageType>Template</PackageType>
-    <TargetFramework>net10.0</TargetFramework>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/Genocs/genocs-library-template.git</RepositoryUrl>
+    <RepositoryBranch>main</RepositoryBranch>
+    <RepositoryType>git</RepositoryType>
+    <Copyright>Copyright (c) 2026 Genocs Services</Copyright>
     <IncludeContentInPack>true</IncludeContentInPack>
+    <PackageReleaseNotes>    </PackageReleaseNotes>
+    <Language>en-US</Language>
     <IncludeBuildOutput>false</IncludeBuildOutput>
-    <ContentTargetFolders>content</ContentTargetFolders>
+    <IncludeSymbols>false</IncludeSymbols>
+    <ContentTargetFolders>template</ContentTargetFolders>
     <NoWarn>$(NoWarn);NU5128</NoWarn>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <DevelopmentDependency>true</DevelopmentDependency>
     <NoDefaultExcludes>true</NoDefaultExcludes>
+    <IncludeSource>false</IncludeSource>
+    <EnableDefaultItems>false</EnableDefaultItems>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
@@ -40,5 +51,5 @@
     <None Include="README.md" Pack="true" PackagePath="" />
     <None Include="..\icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
-  
+
 </Project>
