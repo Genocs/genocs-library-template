@@ -80,9 +80,8 @@ Before getting started, ensure you have the following installed:
 - [Visual Studio Code](https://code.visualstudio.com/)
 - [JetBrains Rider](https://www.jetbrains.com/rider/)
 
-## Quick Start
+## Installation
 
-### Option 1: Install from NuGet (Recommended)
 
 ```bash
 # Install the latest template
@@ -136,7 +135,7 @@ To see all available options for the template:
 dotnet new gnx-librawebapi --help
 ```
 
-> **Latest Version**: The current stable version is **3.0.0**. Check [NuGet](https://www.nuget.org/packages/Genocs.Library.Template/) for the latest release.
+> **Latest Version**: Current stable release is **2.3.0**. Visit [NuGet](https://www.nuget.org/packages/Genocs.Library.Template/) for the latest version.
 
 ## Usage
 
@@ -146,10 +145,10 @@ Once the template is installed, create a new project using:
 
 ```bash
 # Create a new project with your desired name
-dotnet new gnx-librawebapi --name <CompanyName.<ProjectName>.<ServiceName>
+dotnet new gnx-librawebapi --name <CompanyName.ProjectName.ServiceName>
 
 # Navigate to the project directory
-cd CompanyName.ProjectName.ServiceName
+cd <CompanyName.ProjectName.ServiceName>
 
 # Build the solution
 dotnet build

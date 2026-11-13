@@ -141,7 +141,7 @@ If this project has helped you learn something new or assisted you in your work,
 
 <p>
   <a href="https://www.buymeacoffee.com/genocs">
-    <img src="./assets/buy-me-a-coffee.png" alt="Buy me a coffee" width="200"/>
+    <img src="../assets/buy-me-a-coffee.png" alt="Buy me a coffee" width="200"/>
   </a>
 </p>
 
